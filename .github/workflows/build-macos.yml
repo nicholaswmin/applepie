@@ -27,8 +27,7 @@ jobs:
         run: |
           pyinstaller --onefile \
             --name markitdown \
-            --hidden-import markitdown \
-            $(python -c "import markitdown; import os; print(os.path.join(os.path.dirname(markitdown.__file__), '__main__.py'))")
+            run_markitdown.py
 
       - name: Test binary
         run: |

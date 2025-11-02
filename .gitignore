@@ -1,3 +1,7 @@
 bin/
 docs/
 tools/
+__pycache__/
+*.pyc
+markitdown-macos-arm64/
+fetchd-macos-arm64/

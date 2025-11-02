@@ -27,6 +27,8 @@ jobs:
         run: |
           pyinstaller --onefile \
             --name markitdown \
+            --collect-all markitdown \
+            --collect-all magika \
             run_markitdown.py
 
       - name: Test binary

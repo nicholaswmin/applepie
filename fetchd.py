@@ -4,11 +4,6 @@
 A command-line tool that fetches web content and converts it to markdown
 format using the markitdown library, with optional LLM-powered image
 descriptions.
-
-Usage:
-    fetchd https://example.com/article
-    fetchd https://example.com --llm-model gpt-4o
-    fetchd https://example.com --llm-prompt "Describe this image"
 """
 
 # pyright: reportMissingImports=false, reportUnknownMemberType=false

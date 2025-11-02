@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+image="${MARKITDOWN_IMAGE:-markitdown:latest}"
+# If args provided, run file/args mode with CWD mounted; else stream stdin/stdout.
+if [ "$#" -gt 0 ]; then
+  exec docker run --rm -v "$(pwd)":/data -w /data "$image" "$@"
+else
+  exec docker run --rm -i "$image"
+fi

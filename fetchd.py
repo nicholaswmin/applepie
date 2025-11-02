@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Fetch URLs and convert to markdown with configurable LLM support.
+"""Fetch URLs or files and convert to markdown with configurable LLM support.
 
-A command-line tool that fetches web content and converts it to markdown
-format using the markitdown library, with optional LLM-powered image
-descriptions.
+A command-line tool that fetches web content or reads local files and converts
+to markdown format using the markitdown library, with optional LLM-powered
+image descriptions.
 """
 
 # pyright: reportMissingImports=false, reportUnknownMemberType=false
@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 from io import BytesIO
+from pathlib import Path
 from typing import Any
 
 import requests
@@ -32,14 +33,14 @@ def parse_args() -> argparse.Namespace:
     """Parse command-line arguments.
 
     Returns:
-        Parsed arguments namespace containing URL and optional
+        Parsed arguments namespace containing source and optional
         MarkItDown configuration parameters.
     """
     parser = argparse.ArgumentParser(
-        description="Fetch URL and convert to markdown",
+        description="Fetch URL or file and convert to markdown",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("url", help="URL to fetch")
+    parser.add_argument("source", help="URL or filepath")
     parser.add_argument(
         "--llm-model",
         dest="llm_model",
@@ -80,6 +81,18 @@ def build_headers() -> dict[str, str]:
     }
 
 
+def is_url(source: str) -> bool:
+    """Check if source is a URL.
+
+    Args:
+        source: String to check.
+
+    Returns:
+        True if source starts with http:// or https://.
+    """
+    return source.startswith(('http://', 'https://'))
+
+
 def fetch_url(url: str, headers: dict[str, str]) -> bytes:
     """Fetch content from URL with specified headers.
 
@@ -96,6 +109,21 @@ def fetch_url(url: str, headers: dict[str, str]) -> bytes:
     response: requests.Response = requests.get(url, headers=headers)
     response.raise_for_status()
     return response.content
+
+
+def read_file(filepath: str) -> bytes:
+    """Read content from local file.
+
+    Args:
+        filepath: Path to file.
+
+    Returns:
+        Raw file content as bytes.
+
+    Raises:
+        FileNotFoundError: If file does not exist.
+    """
+    return Path(filepath).read_bytes()
 
 
 def markdownify(content: bytes, **options: Any) -> str:
@@ -120,22 +148,25 @@ def extract_converter_options(args: argparse.Namespace) -> dict[str, Any]:
         args: Parsed command-line arguments.
 
     Returns:
-        Dictionary of non-None options for MarkItDown, excluding URL.
+        Dictionary of non-None options for MarkItDown, excluding source.
     """
     return {
         key: value
         for key, value in vars(args).items()
-        if key != "url" and value is not None
+        if key != "source" and value is not None
     }
 
 
 def main() -> None:
     """Main entry point for fetchd CLI tool."""
     args = parse_args()
-
-    headers = build_headers()
-    content = fetch_url(args.url, headers)
     converter_options = extract_converter_options(args)
+
+    if is_url(args.source):
+        headers = build_headers()
+        content = fetch_url(args.source, headers)
+    else:
+        content = read_file(args.source)
 
     markdown_output = markdownify(content, **converter_options)
     print(markdown_output)

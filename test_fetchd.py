@@ -4,6 +4,8 @@
 import unittest
 from unittest.mock import Mock, patch
 import sys
+import tempfile
+from pathlib import Path
 
 import responses
 
@@ -81,6 +83,23 @@ class TestFetchdBehavior(unittest.TestCase):
                 printed_output = mock_print.call_args.args[0]
                 self.assertIn('Content', printed_output)
                 self.assertNotIn('alert', printed_output)
+
+    def test_converts_local_file_to_markdown(self) -> None:
+        """Given local HTML file, should output markdown."""
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.html', delete=False) as f:
+            f.write(HTML_WITH_HEADING)
+            filepath = f.name
+
+        try:
+            with patch.object(sys, 'argv', ['fetchd', filepath]):
+                with patch('builtins.print') as mock_print:
+                    fetchd.main()
+
+                    printed_output = mock_print.call_args.args[0]
+                    self.assertIn('Test Title', printed_output)
+                    self.assertIn('Test paragraph', printed_output)
+        finally:
+            Path(filepath).unlink()
 
 
 class TestFetchdOptions(unittest.TestCase):

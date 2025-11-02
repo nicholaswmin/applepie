@@ -14,7 +14,7 @@ if __name__ == '__main__':
     ua = UserAgent()
 
     headers = {
-        'User-Agent': ua.random,
+        'User-Agent': ua.safari,
         'Accept': '*/*',
         'Accept-Language': '*',
         'Accept-Encoding': 'gzip, deflate',

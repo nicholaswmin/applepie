@@ -1,7 +1,7 @@
 ## applepie
 
-Build standalone macOS binaries from Python CLI tools.
-Uses GitHub Actions and PyInstaller.
+Fetch URLs as Markdown.
+Standalone macOS binary built with PyInstaller.
 
 [![Build macOS Binary][badge-build-macos]][workflow-build-macos]
 [![Build fetchd Binary][badge-build-fetchd]][workflow-build-fetchd]

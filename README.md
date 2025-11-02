@@ -1,6 +1,6 @@
 ## applepie
 
-Fetch URLs as Markdown.
+fetch urls as really... nice Markdown
 
 [![Test][badge-test]][workflow-test]
 
@@ -8,11 +8,7 @@ Fetch URLs as Markdown.
 
 ```bash
 fetchd https://example.com
-```
-
-With LLM image descriptions:
-
-```bash
+fetchd document.pdf
 fetchd https://example.com --llm-model gpt-4o
 ```
 

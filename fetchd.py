@@ -14,7 +14,11 @@ if __name__ == '__main__':
     ua = UserAgent()
 
     headers = {
-        'User-Agent': ua.random
+        'User-Agent': ua.random,
+        'Accept': '*/*',
+        'Accept-Language': '*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'keep-alive'
     }
 
     response = requests.get(url, headers=headers)

@@ -13,6 +13,7 @@ image descriptions.
 from __future__ import annotations
 
 import argparse
+import warnings
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,8 @@ import requests
 from fake_useragent import UserAgent
 from markitdown import MarkItDown
 
+# Suppress pydub ffmpeg warning
+warnings.filterwarnings("ignore", message="Couldn't find ffmpeg or avconv")
 
 # HTTP header constants
 DEFAULT_ACCEPT = "*/*"

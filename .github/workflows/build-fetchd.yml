@@ -30,6 +30,7 @@ jobs:
             --name fetchd \
             --collect-all markitdown \
             --collect-all magika \
+            --collect-all fake_useragent \
             fetchd.py
 
       - name: Test binary

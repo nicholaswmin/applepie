@@ -1,8 +1,14 @@
-## applepie
-
-fetch urls as really... nice Markdown
-
 [![Test][badge-test]][workflow-test]
+
+## fetchd
+
+Basically [microsoft/markitdown][markitdown-repo] with `curl` 
+
+> suitable for LLM use in technical domains,  
+> because it fetches *everything*, not just summaries.
+
+
+
 
 ## Usage
 
